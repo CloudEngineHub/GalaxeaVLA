@@ -1,4 +1,4 @@
-# Out-of-the-Box Ready is All Your Need: User Guides for Pick Up Anything Demo
+# Out-of-the-Box is All Your Need: User Guides for Pick Up Anything Demo
 
 **Pick Up Anything Demo** is a demo that shows how to combine a host computer, a robot (R1Lite) and an easy-to-use APP on an Android device (like a tablet) to implement a pick-up anything task. 
 
@@ -15,7 +15,7 @@ What you should expect:
 You should first make sure all your devices are connected as the following diagram shows:
 
 <p align="center">
-  <img src="../assets/communication_framework.png" alt="Communication Framework" width="700"/>
+  <img src="assets/pick_up_anything_demo/communication_framework.png" alt="Communication Framework" width="700"/>
 </p>
 
 ## Environment Setup on Host Computer
@@ -138,7 +138,7 @@ sudo apt-get update && sudo apt-get install -y --no-install-recommends \
      ```
 
     - This step is crucial, please check whether the links including https://nvidia.github.io/libnvidia-container can be accessed or hit. If it fails, you must stop at this step until it succeeds 
-    - If `curl -v  https://nvidia.github.io/libnvidia-container/stable/deb/amd64/Packages` can get normal output, the website is accessible. Refer to the [following method](./pp_ug_appendix1.md) to add a proxy to apt to resolve the issue.
+    - If `curl -v  https://nvidia.github.io/libnvidia-container/stable/deb/amd64/Packages` can get normal output, the website is accessible. Refer to the [following method](./pp-permanently_configure_proxy_for_apt.md) to add a proxy to apt to resolve the issue.
 
 #### 3.3 Install NVIDIA Container Toolkit 
 
@@ -154,7 +154,7 @@ sudo nvidia-ctk runtime configure --runtime=docker
 
 - Expected Result:
     <p align="center">
-    <img src="../assets/pp_ug_image1.png" alt="pp_ug_image1" width="700"/>
+    <img src="assets/pick_up_anything_demo/pp_ug_image1.png" alt="pp_ug_image1" width="700"/>
     </p>
 
 ### 3.5 Restart the Docker service
@@ -169,25 +169,119 @@ Reference Link:
 
 
 
-## One-click Startup
+## One-Click Startup
 
-### 1. Start the Robot
+### 1. Preparation
 
-1. (Robot) Turn on the robot
+#### 1.1 Machine Preparation
 
-2. (Host) ssh to the robot and one-click startup
+1. (Robot&Host) Set up Host and Robot network configuration
+
+   Follow the [Network Setup Guide](./pp-how_to_set_up_the_network_between_the_host_and_robot.md) to set up the network between the host computer and the robot (R1Lite).
+
+2. (Host) Ensure connection between Host and Robot
+
+   Make sure that the host computer can successfully ping the robot. You can use the following command to test the connection:
+
+   ```bash
+   arp -a
+   ping 10.42.0.<ROBOT_PORT>
+   ssh r1lite@10.42.0.<ROBOT_PORT>
+   ```
+
+   - replace `<ROBOT_PORT>` with the actual IP address of your robot.
+
+3. (Host) Set up ROS2 discovery
+
+   Follow the [ROS2 Discovery Setup Guide](./pp-ros2_discovery_setup.md) to set up the ROS2 discovery on the robot.
+
+4. (Host) Robot one-click startup script creation
+    
+    Copy (e.g., `scp`) the [one-click startup script](./supports/pick_up_anything_demo/model_test.sh) into the robot (R1Lite)'s home directory, and make it executable by running:
+
+    ```bash
+    chmod +x ~/model_test.sh
+    ```
+
+#### 1.2 Docker Image Build
+
+1. (Host) Download our [Official Dockerfile and Related Files on Huggingface](https://huggingface.co/OpenGalaxea/G0-VLA/tree/main/g0plus_dockerfile), and build the Docker image by following the README provided in that repository.
+
+2. (Host) Make sure Docker image `g0plus:ros2_v1-trt` exists on your Host by running:
+
+   ```bash
+   docker images
+   ```
+
+
+
+#### 1.3 Host one-Click Script Download & Folder Structure
+
+(Host) You can download the one-click startup scripts [g0plus_hs_start_v1.sh](./supports/pick_up_anything_demo/g0plus_hs_start_v1.sh) and [docker_g0plus_hs_start_v1.sh](./supports/pick_up_anything_demo/docker_g0plus_hs_start_v1.sh) from our Repo, make sure your folder structure on Host is as follows:
+
+```
+~/
+  ├── g0plus_ros2/
+      ├── data                            # Files to be linked to the docker container
+      |   ├── G0Plus_PP_CKPT/             # G0Plus weights folder
+      |   |   ├── model_state_dict.pt     # G0Plus weights file
+      |   |   ├── prefill.fp16.engine     # G0Plus prefill engine file
+      |   |   └── decode.fp16.engine      # G0Plus decode engine file
+      |   |   └── ...            
+      |   ├── google/
+      |   |   └── paligemma-3b-pt-224/                # paligemma weights file
+      |   └── docker_g0plus_hs_start_v1.sh            # One-click startup script inside docker container  
+      └── g0plus_hs_start_v1.sh           # One-click startup script for host machine
+```
+- Note that: 
+
+  - You need to create the `g0plus_ros2/` and `data/` folder.
+  - You can ignore `G0Plus_PP_CKPT/` and `google/` folder in this step, which will be created in the next steps.
+
+#### 1.4 G0Plus Pick-Up-Anything Checkpoint Download
+
+(Host) Download the checkpoint folder [G0Plus_PP_CKPT/ on Huggingface](https://huggingface.co/OpenGalaxea/G0-VLA/tree/main/g0plus_pick_up_anything_checkpoint), and place it in the `data/` folder created in the previous step.
+
+#### 1.5 Paligemma Checkpoint Download
+
+(Host) Download the paligemma weights [paligemma-3b-pt-224 on Huggingface](https://huggingface.co/google/paligemma-3b-pt-224), and place it in the `data/google/` folder created in the previous step.
+
+
+### 2. Startup Robot
+
+1. (Host) SSH into the robot
+
+   ```bash
+   ssh r1lite@10.42.0.<ROBOT_PORT>
+   ```
+
+   - replace `<ROBOT_PORT>` with the actual IP address of your robot.
+
+2. (Host) Run the one-click startup script on Robot:
+
+   ```bash
+   cd ~
+   ./model_test.sh
+   ```
+
+
+### 3. Startup G0Plus Hierarchical System
+
+(Host) Run the one-click startup script on Host:
 
 ```bash
-ssh r1lite@10.42.0.xx
-./model_start.sh
+cd ~/g0plus_ros2
+./g0plus_hs_start_v1.sh
 ```
+- Note that there are 6 interactive options in the script:
+    1. Select execution mode: choose either "Initial execution" or "Second execution". Note that if choosing "Second execution", the previously entered Gemini and Qwen API keys will be used directly without prompting for input again, and skip steps 3 and 4.
 
+    2. Choose whether to enable the Qwen model: select "Disabled" or "Enable".
 
-### 2. Start the VLM-VLA-EHI System
+    3. Enter the API key of Gemini (only required if Qwen model is enabled in the previous step), default is "NaN".
 
-1. (Host) Build the docker image
+    4. Enter the API key of Qwen (only required if Qwen model is enabled in step 2), default is "NaN". After this step, the terminal will print the currently used Gemini and Qwen API keys for confirmation.
 
+    5. Enter the robot port number (PORT), default is "180" (only supports ports starting with `10.42.0.`).
 
-
-
-
+    6. Enter the name of the Docker container to start, default is `g0plus_ros2_v1`. After this final step, the terminal will enter the tmux session inside the Docker container.
