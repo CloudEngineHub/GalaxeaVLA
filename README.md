@@ -1,4 +1,4 @@
-# Galaxea Open-World Dataset & G0 Dual-System VLA Model
+# Galaxea Open-World Dataset & VLA Models
 
 [![Project Page](https://img.shields.io/badge/Project%20Page-000000?style=for-the-badge&logo=github)](https://opengalaxea.github.io/GalaxeaVLA/)
 [![Paper](https://img.shields.io/badge/Paper-8A2BE2?style=for-the-badge&logo=arxiv)](https://arxiv.org/abs/2509.00576v1)
@@ -17,6 +17,8 @@
 
 
 ## 📢 News
+
+[Jun 1, 2026] Introducing **G0.5**, our latest autoregressive VLA model with state-of-the-art performance [Project Page](https://opengalaxea.github.io/G05/)! Model weights and code are coming soon.
 
 [Feb 12, 2026] Update **G0Plus** pre-trained weights trained on larger-scale teleoperation and web data. Release **G0Tiny** (250M, SmolVLM2 backbone) for R1 Pro Orin edge deployment. New out-of-the-box demos: **Fold Towels** and **Handover Gift** (on-device G0Tiny inference via TensorRT at up to 10 Hz). Add [openpi](https://github.com/Physical-Intelligence/openpi)-based **pi0/pi0fast** fine-tuning support.
 
@@ -47,9 +49,9 @@
    - Modular design enables easy extension and adaptation for new tasks and environments.
 
 3. **Model Checkpoints & An Out-of-the-Box Demo!**
-   - **G0Plus_3B_base**: A powerful pre-trained model with **2k hours+** real-world robot data for fine-tuning on custom tasks.
-   - **G0Tiny_250M_base**: A lightweight pre-trained model with **1k hours** of R1 Pro VR teleoperation data, with only **250M** parameters for on-device deployment on the R1 Pro Orin platform.
-   - **G0Plus_3B_base-pick_and_place**: A deployment-ready checkpoint, post-trained for robust pick-and-place performance in the wild.
+   - **G0Plus_3B-base**: A powerful pre-trained model with **2k hours+** real-world robot data for fine-tuning on custom tasks.
+   - **G0Tiny_250M-base**: A lightweight pre-trained model with **1k hours** of R1 Pro VR teleoperation data, with only **250M** parameters for on-device deployment on the R1 Pro Orin platform.
+   - **G0Plus_3B-pick_and_place**: A deployment-ready checkpoint, post-trained for robust pick-and-place performance in the wild.
    - **Out-of-the-Box Pick Up Anything Demo**: a Dockerfile and step-by-step guides for quick setup and reproducible experiments.
    - **Out-of-the-Box Fold Towels Demo**: a Dockerfile and step-by-step guides for quick setup and reproducible experiments.
    - **Out-of-the-Box Handover Gift Demo**: a step-by-step guide for on-device G0Tiny VLA inference on R1 Pro Orin.
@@ -106,10 +108,10 @@ Note that before you run the installation:
 
 | Model                  | Use Case    | Description                       | Checkpoint Path                                              |
 | ---------------------- | ----------- | --------------------------------- | ------------------------------------------------------------ |
-| G0_3B_base              | Fine-Tuning | Base G0-VLA Model for fine-tuning | https://huggingface.co/OpenGalaxea/G0-VLA/blob/main/G0_3B_base.pt |
-| G0Plus_3B_base              | Fine-Tuning | Base G0Plus-VLA Model for fine-tuning | https://huggingface.co/OpenGalaxea/G0-VLA/tree/main/G0Plus_3B_base |
-| G0Tiny_250M_base            | Fine-Tuning | Lightweight G0Tiny-VLA Model (250M) for edge deployment on R1 Pro Orin | https://huggingface.co/OpenGalaxea/G0-VLA/tree/main/G0Tiny_260120 |
-| G0Plus_3B_base-pick_and_place | Deployment | Pick-and-Place Demo in the Wild | https://huggingface.co/OpenGalaxea/G0-VLA/tree/main/G0Plus_PP_CKPT |
+| G0_3B-base              | Fine-Tuning | Base G0-VLA Model for fine-tuning | https://huggingface.co/OpenGalaxea/G0-VLA/blob/main/G0_3B_base.pt |
+| G0Plus_3B-base              | Fine-Tuning | Base G0Plus-VLA Model for fine-tuning | https://huggingface.co/OpenGalaxea/G0-VLA/tree/main/G0Plus_3B_base |
+| G0Tiny_250M-base            | Fine-Tuning | Lightweight G0Tiny-VLA Model (250M) for edge deployment on R1 Pro Orin | https://huggingface.co/OpenGalaxea/G0-VLA/tree/main/G0Tiny_260120 |
+| G0Plus_3B-pick_and_place | Deployment | Pick-and-Place Demo in the Wild | https://huggingface.co/OpenGalaxea/G0-VLA/tree/main/G0Plus_PP_CKPT |
 
 
 ### Inference on Real Robot
