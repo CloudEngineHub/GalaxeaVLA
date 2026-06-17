@@ -76,6 +76,42 @@ Key ideas from the G0.5 technical report:
   <em>G0.5 Token Sequence Template</em>
 </p>
 
+## 📌 G0Plus Overview
+
+**G0Plus** is an open-source project dedicated to advancing real-world, long-horizon, and few-shot robot manipulation.
+
+1. **Galaxea Open-World Dataset**
+   - **500+ hours** of real-world mobile manipulation data.
+   - All data collected using **one uniform robotic embodiment** for consistency.
+   - Fine-grained **subtask language annotations**.
+   - Covers **residential**, **kitchen**, **retail**, and **office** settings.
+   - Dataset in **RLDS/LeRobot** format.
+
+2. **Easy-to-Use Fine-Tuning Framework**
+   - Fully compatible with the [LeRobot](https://github.com/huggingface/lerobot) dataset format and scalable to large, real-world datasets.
+   - Modular design enables easy extension and adaptation for new tasks and environments.
+
+3. **Model Checkpoints & An Out-of-the-Box Demo!**
+   - **G0Plus_3B-base**: A powerful pre-trained model with **2k hours+** real-world robot data for fine-tuning on custom tasks.
+   - **G0Tiny_250M-base**: A lightweight pre-trained model with **1k hours** of R1 Pro VR teleoperation data, with only **250M** parameters for on-device deployment on the R1 Pro Orin platform.
+   - **G0Plus_3B-pick_and_place**: A deployment-ready checkpoint, post-trained for robust pick-and-place performance in the wild.
+   - **Out-of-the-Box Pick Up Anything Demo**: a Dockerfile and step-by-step guides for quick setup and reproducible experiments.
+   - **Out-of-the-Box Fold Towels Demo**: a Dockerfile and step-by-step guides for quick setup and reproducible experiments.
+   - **Out-of-the-Box Handover Gift Demo**: a step-by-step guide for on-device G0Tiny VLA inference on R1 Pro Orin.
+
+## 🚀 Galaxea Open-World Dataset
+
+### **Key features**
+
+- **500+ hours** of real-world mobile manipulation data.
+- All data collected using **one uniform robotic embodiment** for consistency.
+- Fine-grained **subtask language annotations**.
+- Covers **residential**, **kitchen**, **retail**, and **office** settings.
+- Dataset in **RLDS** and **LeRobot** format.
+
+See more dataset (formats and examples) details [here](docs/data/schema.md).
+
+
 ## ⚙️ G0.5 Getting Started
 
 ### GPU Requirements
