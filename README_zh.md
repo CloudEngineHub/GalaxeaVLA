@@ -266,7 +266,9 @@ bash experiments/so100/start_client.sh
 
 #### DROID / Franka
 
-DROID 部署由本仓库提供 G0.5 策略服务，并使用独立的 Franka 客户端仓库控制机器人：
+DROID 部署由本仓库提供 G0.5 策略服务，并使用独立的
+[OpenGalaxea/droid-franka-client](https://github.com/OpenGalaxea/droid-franka-client)
+仓库控制机器人。先在 GPU 机器上启动策略服务端：
 
 ```bash
 CHECKPOINT_DIR=checkpoints/g05-droid \
@@ -274,6 +276,12 @@ POLICY_PORT=8000 \
 POLICY_DEVICE=cuda:0 \
 bash experiments/droid/start_server.sh \
     model.model_arch.discrete_action=true model.model_arch.continuous_action=false
+```
+
+然后克隆并配置机器人端客户端：
+
+```bash
+git clone git@github.com:OpenGalaxea/droid-franka-client.git
 ```
 
 完整设置和协议约定见 [experiments/droid/README.md](experiments/droid/README.md) 与 [experiments/droid/PROTOCOL.md](experiments/droid/PROTOCOL.md)。

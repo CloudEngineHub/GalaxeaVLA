@@ -264,7 +264,9 @@ Before running the client, update the camera indices and camera-slot mapping in 
 
 #### DROID / Franka
 
-DROID deployment serves the G0.5 policy from this repo and uses a separate Franka client repo for robot control:
+DROID deployment serves the G0.5 policy from this repo and uses the separate
+[OpenGalaxea/droid-franka-client](https://github.com/OpenGalaxea/droid-franka-client)
+repo for robot control. Start the policy server on the GPU machine:
 
 ```bash
 CHECKPOINT_DIR=checkpoints/g05-droid \
@@ -272,6 +274,12 @@ POLICY_PORT=8000 \
 POLICY_DEVICE=cuda:0 \
 bash experiments/droid/start_server.sh \
     model.model_arch.discrete_action=true model.model_arch.continuous_action=false
+```
+
+Then clone and configure the robot-side client:
+
+```bash
+git clone git@github.com:OpenGalaxea/droid-franka-client.git
 ```
 
 See [experiments/droid/README.md](experiments/droid/README.md) and [experiments/droid/PROTOCOL.md](experiments/droid/PROTOCOL.md) for the full setup and protocol contract.

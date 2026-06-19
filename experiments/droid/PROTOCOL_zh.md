@@ -1,4 +1,4 @@
-# G05 DROID Policy Server — 接口契约
+# G0.5 DROID Policy Server — 接口契约
 
 > client(`droid-franka-client`)与 server(本仓库 `scripts/serve_policy.py`)之间的**唯一**接口。
 > 两边各放一份;任一边改协议,另一边据此更新。client 与 server **零 Python import 依赖**,只认本协议。

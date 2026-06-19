@@ -1,8 +1,8 @@
 #!/bin/bash
-# Start the G05 DROID policy server (WebSocket :PORT).
+# Start the G0.5 DROID policy server (WebSocket :PORT).
 #
 # Usage:
-#   CHECKPOINT_DIR=/abs/path/to/g05_droid POLICY_PORT=8000 \
+#   CHECKPOINT_DIR=checkpoints/g05-droid POLICY_PORT=8000 \
 #     bash experiments/droid/start_server.sh
 set -euo pipefail
 

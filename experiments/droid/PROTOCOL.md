@@ -1,4 +1,4 @@
-# G05 DROID Policy Server Interface Contract
+# G0.5 DROID Policy Server Interface Contract
 
 > This is the only interface between the client (`droid-franka-client`) and this repository's server (`scripts/serve_policy.py`).
 > Keep one copy on each side. If either side changes the protocol, update the other side from this document. The client and server have zero Python import dependency on each other and rely only on this protocol.
