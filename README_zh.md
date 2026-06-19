@@ -310,7 +310,12 @@ LIBERO 安装说明、生成的路径配置、输出布局和单 suite 调试命
    - R1 Pro 关节空间训练：[configs/task/r1pro.yaml](configs/task/r1pro.yaml)，数据集路径在 [configs/data/r1pro.yaml](configs/data/r1pro.yaml) 中更新。
    - R1 Pro 包含躯干状态/动作的 WBC 训练：[configs/task/r1pro_wbc.yaml](configs/task/r1pro_wbc.yaml)，数据集路径在 [configs/data/r1pro_wbc.yaml](configs/data/r1pro_wbc.yaml) 中更新。
 
-   R1 Pro 默认配置使用示例数据路径，例如 `data/r1pro/fold_carton_lerobot`。训练前请替换为本地 LeRobot 数据集目录。`r1pro.yaml` 和 `r1pro_wbc.yaml` 当前设置了 `model.max_steps: 50`，这是 smoke-test 默认值，不是完整训练 schedule；正式训练请增大 `model.max_steps` 或设置 `model.max_epochs`。
+   这三类 Galaxea 机器人数据配置都包含示例本地数据路径，训练前必须替换：
+   - R1 Lite：替换 `configs/data/r1lite.yaml` 中的 `data/r1lite/task*_lerobot`。
+   - R1 Pro：替换 `configs/data/r1pro.yaml` 中的 `data/r1pro/fold_carton_lerobot`。
+   - R1 Pro WBC：替换 `configs/data/r1pro_wbc.yaml` 中的 `data/r1pro_wbc/stack_box_lerobot`。
+
+   这些路径应指向你的本地 LeRobot 数据集目录。
 
 2. 安装所需软件包。
 

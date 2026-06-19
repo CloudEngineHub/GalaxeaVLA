@@ -308,7 +308,13 @@ To fine-tune our models with your own data, follow four steps. See [configs/QUIC
    - R1 Pro joint-space training: [configs/task/r1pro.yaml](configs/task/r1pro.yaml) with dataset paths in [configs/data/r1pro.yaml](configs/data/r1pro.yaml).
    - R1 Pro whole-body-control training with torso state/action: [configs/task/r1pro_wbc.yaml](configs/task/r1pro_wbc.yaml) with dataset paths in [configs/data/r1pro_wbc.yaml](configs/data/r1pro_wbc.yaml).
 
-   The R1 Pro defaults use example dataset paths such as `data/r1pro/fold_carton_lerobot`. Replace them with your local LeRobot dataset directories before training. `r1pro.yaml` and `r1pro_wbc.yaml` currently set `model.max_steps: 50`, which is a smoke-test default rather than a full training schedule; increase `model.max_steps` or set `model.max_epochs` for real runs.
+   All three Galaxea robot data configs contain example local dataset paths and
+   must be edited before training:
+   - R1 Lite: replace `data/r1lite/task*_lerobot` in `configs/data/r1lite.yaml`.
+   - R1 Pro: replace `data/r1pro/fold_carton_lerobot` in `configs/data/r1pro.yaml`.
+   - R1 Pro WBC: replace `data/r1pro_wbc/stack_box_lerobot` in `configs/data/r1pro_wbc.yaml`.
+
+   The paths should point to your local LeRobot dataset directories.
 
 2. Install the required packages.
 
