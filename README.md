@@ -80,29 +80,13 @@ Key ideas from the G0.5 technical report:
 
 ## 📌 Legacy G0 / G0Plus Overview
 
-This section preserves the G0Plus overview from earlier GalaxeaVLA releases for continuity. G0Plus and G0Tiny belong to the legacy G0/G0Plus release line. The current branch focuses on G0.5, and no longer includes the legacy G0Plus Dockerfiles, Fold Towels/Handover Gift demo guides, or pi0/pi0fast training configs.
+This section preserves the G0Plus overview from earlier GalaxeaVLA releases for continuity. G0Plus and G0Tiny belong to the legacy G0/G0Plus release line. The current branch focuses on G0.5, and no longer includes the legacy G0Plus Dockerfiles, Fold Towels/Handover Gift demo guides, or pi0/pi0fast training configs. For the exact legacy README and file layout, use commit [13a16a9](https://github.com/OpenGalaxea/GalaxeaVLA/tree/13a16a9049aee8f1d799b56fccc0c5832a75fc2f). Historical checkpoints remain available in the [G0-VLA Hugging Face repository](https://huggingface.co/OpenGalaxea/G0-VLA), including: 
 
-For the exact legacy README and file layout, use commit [13a16a9](https://github.com/OpenGalaxea/GalaxeaVLA/tree/13a16a9049aee8f1d799b56fccc0c5832a75fc2f). Historical checkpoints remain available in the [G0-VLA Hugging Face repository](https://huggingface.co/OpenGalaxea/G0-VLA), including `G0Plus_3B_base`, `G0Tiny_260120`, and `G0Plus_PP_CKPT`.
-
-**G0Plus** was an open-source project dedicated to advancing real-world, long-horizon, and few-shot robot manipulation.
-
-1. **Galaxea Open-World Dataset**
-   - **500+ hours** of real-world mobile manipulation data.
-   - All data collected using **one uniform robotic embodiment** for consistency.
-   - Fine-grained **subtask language annotations**.
-   - Covers **residential**, **kitchen**, **retail**, and **office** settings.
-   - Dataset in **RLDS/LeRobot** format.
-
-2. **Easy-to-Use Fine-Tuning Framework**
-   - Compatible with the [LeRobot](https://github.com/huggingface/lerobot) dataset format and scalable to large real-world datasets.
-   - Modular design for extension and adaptation to new tasks and environments.
-
-3. **Model Checkpoints and Legacy Demos**
    - **G0Plus_3B-base**: pretrained with **2k+ hours** of real-world robot data for fine-tuning on custom tasks.
    - **G0Tiny_250M-base**: lightweight pretrained model with **1k hours** of R1 Pro VR teleoperation data, designed for R1 Pro Orin edge deployment.
    - **G0Plus_3B-pick_and_place**: post-trained checkpoint for pick-and-place deployment.
-   - Legacy demos included Pick Up Anything, Fold Towels, and Handover Gift.
-   - openpi-based **pi0/pi0fast** fine-tuning support was documented in the legacy release.
+   - **Demos** included Pick Up Anything, Fold Towels, and Handover Gift.
+   - openpi-based **pi0/pi0fast** fine-tuning support.
 
 ## 🚀 Galaxea Open-World Dataset
 

@@ -80,29 +80,13 @@ G0.5 技术报告中的核心思路：
 
 ## 📌 历史 G0 / G0Plus 概览
 
-本节保留早期 GalaxeaVLA 版本中的 G0Plus 概览，方便追溯项目历史。G0Plus 和 G0Tiny 属于旧版 G0/G0Plus 发布线；当前分支的主要内容已经切换到 G0.5，不再包含旧版 G0Plus Dockerfile、Fold Towels/Handover Gift 演示指南或 pi0/pi0fast 训练配置。
+本节保留早期 GalaxeaVLA 版本中的 G0Plus 概览，方便追溯项目历史。G0Plus 和 G0Tiny 属于旧版 G0/G0Plus 发布线；当前分支的主要内容已经切换到 G0.5，不再包含旧版 G0Plus Dockerfile、Fold Towels/Handover Gift 演示指南或 pi0/pi0fast 训练配置。如需复现旧版 README 和文件布局，请查看 commit [13a16a9](https://github.com/OpenGalaxea/GalaxeaVLA/tree/13a16a9049aee8f1d799b56fccc0c5832a75fc2f)。历史权重仍位于 [G0-VLA Hugging Face 仓库](https://huggingface.co/OpenGalaxea/G0-VLA)，包括：
 
-如需复现旧版 README 和文件布局，请查看 commit [13a16a9](https://github.com/OpenGalaxea/GalaxeaVLA/tree/13a16a9049aee8f1d799b56fccc0c5832a75fc2f)。历史权重仍位于 [G0-VLA Hugging Face 仓库](https://huggingface.co/OpenGalaxea/G0-VLA)，包括 `G0Plus_3B_base`、`G0Tiny_260120` 和 `G0Plus_PP_CKPT`。
-
-**G0Plus** 是一个开源项目，目标是推进真实世界、长时程和少样本机器人操作。
-
-1. **Galaxea 开放世界数据集**
-   - **500+ 小时**真实世界移动操作数据。
-   - 所有数据都使用**统一机器人本体**采集，以保证一致性。
-   - 细粒度的**子任务语言标注**。
-   - 覆盖**住宅**、**厨房**、**零售**和**办公**场景。
-   - 数据集提供 **RLDS/LeRobot** 格式。
-
-2. **易用的微调框架**
-   - 兼容 [LeRobot](https://github.com/huggingface/lerobot) 数据集格式，并可扩展到大规模真实世界数据集。
-   - 模块化设计，便于扩展和适配新任务、新环境。
-
-3. **模型权重和历史演示**
    - **G0Plus_3B-base**：使用 **2k+ 小时**真实世界机器人数据预训练，可用于自定义任务微调。
    - **G0Tiny_250M-base**：轻量级预训练模型，使用 **1k 小时** R1 Pro VR 遥操作数据训练，面向 R1 Pro Orin 边缘部署。
    - **G0Plus_3B-pick_and_place**：面向 pick-and-place 部署的后训练权重。
-   - 历史演示包括 Pick Up Anything、Fold Towels 和 Handover Gift。
-   - 旧版发布中还包含基于 openpi 的 **pi0/pi0fast** 微调说明。
+   - Pick Up Anything、Fold Towels 和 Handover Gift 的 **demo**。
+   - 基于 openpi 的 **pi0/pi0fast** 微调。
 
 ## 🚀 Galaxea 开放世界数据集
 
