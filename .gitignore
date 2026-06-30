@@ -169,3 +169,6 @@ cython_debug/
 outputs/
 tmp/
 checkpoints/
+/data
+# local-only setup scratch notes (may contain machine-specific/internal paths)
+ENV_SETUP_NOTES.md

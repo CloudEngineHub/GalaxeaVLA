@@ -13,7 +13,17 @@ This directory contains the client-side code for LIBERO simulation evaluation an
 
 ## Prerequisites
 
-1. **Install LIBERO**: see the "Install Libero simulation support" section in the repository root `README.md`, for example `cd ../LIBERO && uv pip install -e .`.
+1. **Install LIBERO** (needed only for evaluation rollouts — training does not need the simulator).
+   The `libero` package is not in `pyproject.toml` and is not a submodule, so `uv sync` does not
+   install it. Install it with `--no-deps` so its pinned `requirements.txt` does not downgrade this
+   repo's locked environment (the required `robosuite` / `bddl` / `robomimic` / `mujoco` are already
+   pinned here):
+
+   ```bash
+   git clone https://github.com/Lifelong-Robot-Learning/LIBERO.git ../LIBERO
+   uv pip install -e ../LIBERO --no-deps
+   python -c "import libero; print('libero ok')"
+   ```
 2. **Path config `config.yaml`**: when the LIBERO package is imported for the first time without config, it asks for paths interactively. Background runs can fail with `EOFError`. This repository handles that as follows:
    - Set `LIBERO_CONFIG_PATH=$(pwd)/experiments/libero` before evaluation, as shown in the command below.
    - `ensure_libero_config()` in `libero_eval_utils.py` derives resource paths from the installed LIBERO package and generates `config.yaml` at evaluation startup, so manual creation is not required.

@@ -154,8 +154,7 @@ Download the Hugging Face repository into `checkpoints/` so the local paths matc
 ```bash
 huggingface-cli download OpenGalaxea/G05 \
     --repo-type model \
-    --local-dir checkpoints \
-    --local-dir-use-symlinks False
+    --local-dir checkpoints
 ```
 
 Expected local layout after downloading available checkpoints and placing any separately distributed RoboTwin checkpoint:
@@ -277,9 +276,17 @@ git clone git@github.com:OpenGalaxea/droid-franka-client.git
 
 See [experiments/droid/README.md](experiments/droid/README.md) and [experiments/droid/PROTOCOL.md](experiments/droid/PROTOCOL.md) for the full setup and protocol contract.
 
+### Training on LIBERO
+
+For a minimal end-to-end LIBERO fine-tuning walkthrough — wiring the `g05-base` checkpoint,
+the LIBERO LeRobot datasets, and `libero_stats.json` into the layout the configs expect, then
+running a single-GPU smoke test — see [skills/setup-libero-training](skills/setup-libero-training/SKILL.md).
+Training does **not** need the LIBERO simulator (that is only for evaluation rollouts).
+
 ### Evaluation on LIBERO
 
-LIBERO evaluation also uses a server/client setup. This command starts a batched policy server in the background, launches one parallel client for each LIBERO suite, then stops the server after evaluation.
+LIBERO evaluation also uses a server/client setup. Install the LIBERO simulator first — see
+[experiments/libero/README.md](experiments/libero/README.md#prerequisites). This command starts a batched policy server in the background, launches one parallel client for each LIBERO suite, then stops the server after evaluation.
 
 ```bash
 bash scripts/run/eval_libero.sh checkpoints/g05-libero/model.pt \
