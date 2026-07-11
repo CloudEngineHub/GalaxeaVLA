@@ -15,11 +15,13 @@
 
 ## 📢 最新动态
 
-[2026 年 6 月 29 日] 我们新增 **G0.5** RoboTwin 2.0 评测支持，包括评测入口和 `g05-robotwin20` [权重](https://huggingface.co/OpenGalaxea/G05/tree/main/g05-robotwin20)。更多仿真 benchmark 的评测功能将很快更新。
+[2026 年 7 月 11 日] 我们在 [experiments/r1pro](experiments/r1pro) 中新增 **R1 Pro** 真机零样本推理部署入口，使用与 R1 Lite 零样本部署相同的 [`g05-base` 预训练权重](https://huggingface.co/OpenGalaxea/G05/tree/main/g05-base)。
 
-[2026 年 6 月 17 日] 我们提供了 **G0.5** 在 so-100/101 本体上零样本推理部署的 `g05-so101` [权重](https://huggingface.co/OpenGalaxea/G05/tree/main/g05-so101)。
+[2026 年 6 月 29 日] 我们在 [experiments/robotwin](experiments/robotwin) 中新增 **G0.5** RoboTwin 2.0 评测入口，并提供 [`g05-robotwin20` 权重](https://huggingface.co/OpenGalaxea/G05/tree/main/g05-robotwin20)。更多仿真 benchmark 的评测功能将很快更新。
 
-[2026 年 6 月 16 日] 我们提供了 **G0.5** 模型在 R1 Lite 和 DROID 本体上的零样本推理部署入口，并提供 LIBERO 仿真评测入口和 R1 Lite/R1 Pro 后训练微调支持。
+[2026 年 6 月 17 日] 我们在 [experiments/so100](experiments/so100) 中新增 **G0.5** SO-100/101 零样本推理部署入口，并提供 [`g05-so101` 权重](https://huggingface.co/OpenGalaxea/G05/tree/main/g05-so101)。
+
+[2026 年 6 月 16 日] 我们发布 **G0.5** 预训练权重 [`g05-base`](https://huggingface.co/OpenGalaxea/G05/tree/main/g05-base)。该权重也支持 R1 Lite 零样本推理部署，入口位于 [experiments/r1lite](experiments/r1lite)。此外，我们还新增 DROID 零样本推理部署入口 [experiments/droid](experiments/droid)，使用 [`g05-droid` 权重](https://huggingface.co/OpenGalaxea/G05/tree/main/g05-droid)；LIBERO 仿真评测入口 [experiments/libero](experiments/libero)，使用 [`g05-libero` 权重](https://huggingface.co/OpenGalaxea/G05/tree/main/g05-libero)；以及通过 [scripts/run/finetune.sh](scripts/run/finetune.sh) 启动的 R1 Lite/R1 Pro 后训练微调支持，并以 `g05-base` 作为初始化权重。
 
 [2026 年 6 月 1 日] 我们发布 **G0.5**，这是最新的自回归 VLA 模型，具备领先性能。请查看[项目主页](https://opengalaxea.github.io/G05/)。
 
@@ -192,7 +194,7 @@ checkpoints/
 
 | 模型 | 用途 | 本地 `--ckpt_path` |
 | ---- | ---- | ------------------ |
-| [G05-base](https://huggingface.co/OpenGalaxea/G05/tree/main/g05-base) | 微调和 R1 Lite 零样本部署 | `checkpoints/g05-base/checkpoints/model_state_dict.pt` |
+| [G05-base](https://huggingface.co/OpenGalaxea/G05/tree/main/g05-base) | 微调和 R1 Lite/R1 Pro 零样本部署 | `checkpoints/g05-base/checkpoints/model_state_dict.pt` |
 | [G05-so101](https://huggingface.co/OpenGalaxea/G05/tree/main/g05-so101) | SO-100/101 零样本部署 | `checkpoints/g05-so101/checkpoints/model_state_dict.pt` |
 | [G05-droid](https://huggingface.co/OpenGalaxea/G05/tree/main/g05-droid) | DROID 零样本部署 | `checkpoints/g05-droid/checkpoints/model_state_dict.pt` |
 | [G05-libero](https://huggingface.co/OpenGalaxea/G05/tree/main/g05-libero) | LIBERO 评测 | `checkpoints/g05-libero/model.pt` |
@@ -236,6 +238,36 @@ python run.py --config config.toml
 ```
 
 ROS2 话题、客户端/服务端协议、指令文件、录制和测试细节见 [experiments/r1lite/README.md](experiments/r1lite/README.md)。
+
+#### R1 Pro
+
+R1 Pro 部署使用多帧策略服务端和 `experiments/r1pro` 下的 ROS2 客户端。先在 GPU 机器上使用 R1 Pro checkpoint 启动策略服务端：
+
+```bash
+PYTHONPATH="src:${PYTHONPATH:-}" python scripts/serve_policy_mem.py \
+    --ckpt_path /path/to/r1pro/checkpoints/model_state_dict.pt \
+    --host 0.0.0.0 \
+    --port 8080 \
+    --device cuda \
+    --action_steps 16 \
+    eval_embodiment=galaxea_r1pro \
+    model.model_weights_to_bf16=true \
+    model.use_torch_compile=true \
+    model.model_arch.attn_implementation=sdpa \
+    model.model_arch.discrete_action=true \
+    model.model_arch.continuous_action=false
+```
+
+然后在 `experiments/r1pro/config.toml` 中设置服务端地址，并在机器人机器上启动客户端：
+
+```bash
+source /opt/ros/humble/setup.bash
+source .venv/bin/activate
+cd experiments/r1pro
+python run.py --config config.toml
+```
+
+ROS2 话题、客户端/服务端协议、指令管理、录制、可视化和测试细节见 [experiments/r1pro/README_zh.md](experiments/r1pro/README_zh.md)。
 
 #### SO-100 / SO-101
 

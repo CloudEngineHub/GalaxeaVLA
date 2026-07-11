@@ -15,11 +15,13 @@
 
 ## 📢 News
 
-[Jun 29, 2026] We add **G0.5** RoboTwin 2.0 evaluation support, including the RoboTwin 2.0 evaluation entrypoint and the `g05-robotwin20` [checkpoint](https://huggingface.co/OpenGalaxea/G05/tree/main/g05-robotwin20) layout. Evaluation support for more simulation benchmarks will be released soon.
+[Jul 11, 2026] We add an **G0.5** **R1 Pro** real-robot zero-shot inference deployment entrypoint under [experiments/r1pro](experiments/r1pro), using the same [`g05-base` pretrained checkpoint](https://huggingface.co/OpenGalaxea/G05/tree/main/g05-base) as the R1 Lite zero-shot deployment.
 
-[Jun 17, 2026] We release the `g05-so101` [checkpoint](https://huggingface.co/OpenGalaxea/G05/tree/main/g05-so101) of **G0.5** for zero-shot inference deployment on so-100/101.
+[Jun 29, 2026] We add a **G0.5** **RoboTwin 2.0** evaluation entrypoint under [experiments/robotwin](experiments/robotwin), together with the [`g05-robotwin20` checkpoint](https://huggingface.co/OpenGalaxea/G05/tree/main/g05-robotwin20). Evaluation support for more simulation benchmarks will be released soon.
 
-[Jun 16, 2026] We provide zero-shot inference deployment entrypoints for the **G0.5** model on the R1 Lite and DROID embodiment, along with a LIBERO simulation evaluation entrypoint and R1 Lite/R1 Pro post-training fine-tuning support. 
+[Jun 17, 2026] We add a **G0.5** **SO-100/101** zero-shot inference deployment entrypoint under [experiments/so100](experiments/so100), together with the [`g05-so101` checkpoint](https://huggingface.co/OpenGalaxea/G05/tree/main/g05-so101).
+
+[Jun 16, 2026] We release the [`g05-base` pretrained checkpoint](https://huggingface.co/OpenGalaxea/G05/tree/main/g05-base) for **G0.5**. The same checkpoint also supports zero-shot inference deployment on **R1 Lite** via the entrypoint in [experiments/r1lite](experiments/r1lite). We additionally add a **DROID** zero-shot inference deployment entrypoint under [experiments/droid](experiments/droid), using the [`g05-droid` checkpoint](https://huggingface.co/OpenGalaxea/G05/tree/main/g05-droid), a **LIBERO** simulation evaluation entrypoint under [experiments/libero](experiments/libero), using the [`g05-libero` checkpoint](https://huggingface.co/OpenGalaxea/G05/tree/main/g05-libero), and R1 Lite/R1 Pro **fine-tuning** through [scripts/run/finetune.sh](scripts/run/finetune.sh), initialized from `g05-base`.
 
 [Jun 1, 2026] We introduce **G0.5**, our latest autoregressive VLA model with state-of-the-art performance. See the [Project Page](https://opengalaxea.github.io/G05/).
 
@@ -189,7 +191,7 @@ With the RoboTwin checkpoint included, the full set is about 55 GB. Each G0.5 mo
 
 | Model | Use | Local `--ckpt_path` |
 | ----- | --- | ------------------- |
-| [G05-base](https://huggingface.co/OpenGalaxea/G05/tree/main/g05-base) | Fine-tuning and R1 Lite zero-shot deployment | `checkpoints/g05-base/checkpoints/model_state_dict.pt` |
+| [G05-base](https://huggingface.co/OpenGalaxea/G05/tree/main/g05-base) | Fine-tuning and R1 Lite/R1 Pro zero-shot deployment | `checkpoints/g05-base/checkpoints/model_state_dict.pt` |
 | [G05-so101](https://huggingface.co/OpenGalaxea/G05/tree/main/g05-so101) | SO-100/101 zero-shot deployment | `checkpoints/g05-so101/checkpoints/model_state_dict.pt` |
 | [G05-droid](https://huggingface.co/OpenGalaxea/G05/tree/main/g05-droid) | DROID zero-shot deployment | `checkpoints/g05-droid/checkpoints/model_state_dict.pt` |
 | [G05-libero](https://huggingface.co/OpenGalaxea/G05/tree/main/g05-libero) | LIBERO evaluation | `checkpoints/g05-libero/model.pt` |
@@ -235,6 +237,36 @@ python run.py --config config.toml
 ```
 
 See [experiments/r1lite/README.md](experiments/r1lite/README.md) for the ROS2 topics, client/server protocol, instruction file, recording, and testing details.
+
+#### R1 Pro
+
+R1 Pro deployment uses the multi-frame policy server and the ROS2 client under `experiments/r1pro`. Start the policy server on the GPU machine with an R1 Pro checkpoint:
+
+```bash
+PYTHONPATH="src:${PYTHONPATH:-}" python scripts/serve_policy_mem.py \
+    --ckpt_path /path/to/r1pro/checkpoints/model_state_dict.pt \
+    --host 0.0.0.0 \
+    --port 8080 \
+    --device cuda \
+    --action_steps 16 \
+    eval_embodiment=galaxea_r1pro \
+    model.model_weights_to_bf16=true \
+    model.use_torch_compile=true \
+    model.model_arch.attn_implementation=sdpa \
+    model.model_arch.discrete_action=true \
+    model.model_arch.continuous_action=false
+```
+
+Then set the server address in `experiments/r1pro/config.toml` and start the client on the robot machine:
+
+```bash
+source /opt/ros/humble/setup.bash
+source .venv/bin/activate
+cd experiments/r1pro
+python run.py --config config.toml
+```
+
+See [experiments/r1pro/README.md](experiments/r1pro/README.md) for the ROS2 topics, client/server protocol, instruction management, recording, visualization, and testing details.
 
 #### SO-100 / SO-101
 
