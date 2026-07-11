@@ -378,6 +378,19 @@ class ChunkedPolicyWrapper:
             t4 = time.monotonic()
             action = actions[0]
             self._cot_text = action.pop("_cot_text", None)
+            # Drop keys the AR head did not confidently predict. The protocol
+            # returns only predicted keys; each client fills/holds missing keys
+            # itself (it knows its own expected key set). Generalizes beyond
+            # gripper to any absent action part.
+            absent_keys = action.pop("_absent_keys", set())
+            for key in absent_keys:
+                action.pop(key, None)
+            if absent_keys:
+                logger.warning(
+                    "Dropped absent action keys %s (emb=%s); client must handle missing keys.",
+                    sorted(absent_keys),
+                    raw_obs.get("embodiment_type", "?"),
+                )
             self._cached_chunk = dict_apply(
                 action, lambda x: x[0].numpy() if isinstance(x, torch.Tensor) else x
             )
